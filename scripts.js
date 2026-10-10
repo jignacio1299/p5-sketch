@@ -11,7 +11,7 @@ const ROTATION_SPEED = 0.5;   // Degrees rotated per frame
 const GROWTH_SPEED = 1;       // Amount sidelength of all triangles grows per frame
 const OFFSET_SIZE_AMT = 250;  // Amount sidelength of triangles differs
 const OFFSET_ANGLE_AMT = 40;  // Amount angle between triangles differs
-
+const RECT_SIZE = 50;        // Size of square in middle
 
 function drawTriangle(offsetSize, offsetAngle, color) {
   const MAX_TRIANGLE_SIZE = 1500;
@@ -22,7 +22,7 @@ function drawTriangle(offsetSize, offsetAngle, color) {
   push();  // As I understand it, start effects for this shape only?
           // Rather, whatever is drawn before pop() is called?
 
-  translate(CANVAS_X / 2, CANVAS_Y / 2);   // Move origin to the object's position
+  translate(CANVAS_X / 2, CANVAS_Y / 2);   // Move origin to the center of the canvas
   rotate(currAngle);                     // Rotate around that origin
   fill(color);
 
@@ -54,10 +54,11 @@ function draw() {
   const OFFSET_SIZE_AMT = 250;  // Amount sidelength of triangles differs
   const OFFSET_ANGLE_AMT = 40;  // Amount angle between triangles differs
   const CANVAS_BG = color(0, 0, 100); // White background
+  const RECT_SIZE = 50;
   
   background(CANVAS_BG);  // Clear previous drawings
   
-  
+  // DRAW TRIANGLES
   for(let i = 0; i < TRIANGLE_COUNT; i++) {
     // Since the max value for HSB is 8, each triangle
     // will be colored 
@@ -78,16 +79,43 @@ function draw() {
     drawTriangle(OFFSET_SIZE_AMT * i, OFFSET_ANGLE_AMT * i, color(i, 60, 80, 0.25));
   }
   
+  // DRAW SQUARE (rect)
   {
     push();
-    const RECT_SIZE = 600;
-    translate(CANVAS_X / 2, CANVAS_Y / 2);   // Move origin to the object's position
-    rect(CANVAS_X / 2 - RECT_SIZE / 2, CANVAS_Y / 2 - RECT_SIZE - 2, 
-         CANVAS_X / 2 + RECT_SIZE / 2, CANVAS_Y / 2 + RECT_SIZE - 2);
-    fill(color(0, 50, 60, 1));
+    translate(CANVAS_X / 2, CANVAS_Y / 2);   // Move origin to the center of the canvas
+    fill(color(0, 0, 100, 0.85));
+    rotate(-angle);
+    // rect(-RECT_SIZE / 2 , -RECT_SIZE / 2, 
+         // RECT_SIZE / 2 ,  RECT_SIZE / 2);
+    rect(-RECT_SIZE / 2, -RECT_SIZE / 2, RECT_SIZE, RECT_SIZE);
     
     pop();
   }
+  // DRAW CIRCLE (ellipse)
+  {
+    push();
+    // Ratio of radius to square such that circle circumscribes the square
+    const CIRC_SIZE = RECT_SIZE * sqrt(2) + strokeWeight(); 
+    translate(CANVAS_X / 2, CANVAS_Y / 2);   // Move origin to the center of the canvas
+    fill(color((size * 0.01) % 8, 100, 100, 0.55));
+    ellipse(0, 0, CIRC_SIZE, CIRC_SIZE);
+    pop();
+  }
+  // DRAW LINES
+  {
+    push();
+    translate(CANVAS_X / 2, CANVAS_Y / 2);   // Move origin to the center of the canvas
+    stroke(color((size * 0.01) % 8, 100, 100, 0.65));
+    rotate(-angle);
+    // rect(-RECT_SIZE / 2 , -RECT_SIZE / 2, 
+         // RECT_SIZE / 2 ,  RECT_SIZE / 2);
+    line(-RECT_SIZE / 2, -RECT_SIZE / 2, RECT_SIZE / 2, RECT_SIZE / 2);
+    line(-RECT_SIZE / 2, RECT_SIZE / 2, RECT_SIZE / 2, -RECT_SIZE / 2);
+    
+    pop();
+  }
+  
+  
   
   angle += ROTATION_SPEED;
   size += GROWTH_SPEED;  
