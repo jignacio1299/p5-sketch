@@ -1,5 +1,6 @@
 // The consts marked unused are redeclared in setup() and draw().
 // The drawing wouldn't load if I didn't for some reason :/
+// I just wanted to collect them all
 let angle = 0;
 let size = 0;
 const CANVAS_X = 750;
@@ -97,7 +98,7 @@ function draw() {
     // Ratio of radius to square such that circle circumscribes the square
     const CIRC_SIZE = RECT_SIZE * sqrt(2) + strokeWeight(); 
     translate(CANVAS_X / 2, CANVAS_Y / 2);   // Move origin to the center of the canvas
-    fill(color((size * 0.01) % 8, 100, 100, 0.55));
+    fill(color((size * 0.01) % TRIANGLE_COUNT, 100, 100, 0.55));
     ellipse(0, 0, CIRC_SIZE, CIRC_SIZE);
     pop();
   }
@@ -105,7 +106,7 @@ function draw() {
   {
     push();
     translate(CANVAS_X / 2, CANVAS_Y / 2);   // Move origin to the center of the canvas
-    stroke(color((size * 0.01) % 8, 100, 100, 0.65));
+    stroke(color((size * 0.01) % TRIANGLE_COUNT, 100, 100, 0.65));
     rotate(-angle);
     // rect(-RECT_SIZE / 2 , -RECT_SIZE / 2, 
          // RECT_SIZE / 2 ,  RECT_SIZE / 2);
